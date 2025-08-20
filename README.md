@@ -1,10 +1,11 @@
 # Fraud-Detection-Random-Forest-Logistic-Regression
-Machine learning project for detecting credit card fraud using Random Forest and Logistic Regression
+Machine learning project for detecting credit card fraud using Random Forest and Logistic Regression.
+This project uses the Kaggle Credit Card Fraud Detection dataset.
 
 # Credit Card Fraud Detection
 A Python project for detecting fraudulent credit card transactions using machine learning.
 
-## Features
+# Features
 - Handles imbalanced classes (SMOTE, under-sampling, class weighting)
 - Baseline and tuned models: Logistic Regression, Random Forest
 - Hyperparameter tuning with GridSearchCV & RandomizedSearchCV
@@ -15,10 +16,7 @@ A Python project for detecting fraudulent credit card transactions using machine
 1. Clone the repo.
 2. Install dependencies:
 
-# Credit Card Fraud Dataset
-This project uses the Kaggle Credit Card Fraud Detection dataset.
-
-## How to download
+# How to download
 1. Create a Kaggle account.
 2. Install Kaggle API: `pip install kaggle`
 3. Run: `kaggle datasets download -d mlg-ulb/creditcardfraud`
