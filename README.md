@@ -23,3 +23,6 @@ This project uses the Kaggle Credit Card Fraud Detection dataset.
 2. Install Kaggle API: `pip install kaggle`
 3. Run: `kaggle datasets download -d mlg-ulb/creditcardfraud`
 4. Place `creditcard.csv` in this `data/` folder.
+5. 
+## ⚠️ Disclaimer
+This project is for educational purposes only. Do not use it for real-world financial transactions without proper validation.
