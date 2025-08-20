@@ -14,3 +14,12 @@ A Python project for detecting fraudulent credit card transactions using machine
 ## Setup
 1. Clone the repo.
 2. Install dependencies:
+
+# Credit Card Fraud Dataset
+This project uses the Kaggle Credit Card Fraud Detection dataset.
+
+## How to download
+1. Create a Kaggle account.
+2. Install Kaggle API: `pip install kaggle`
+3. Run: `kaggle datasets download -d mlg-ulb/creditcardfraud`
+4. Place `creditcard.csv` in this `data/` folder.
