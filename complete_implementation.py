@@ -1,3 +1,5 @@
+# src/fraud_detection.py
+
 # Imports
 import pandas as pd
 import numpy as np
@@ -18,10 +20,12 @@ import os
 np.random.seed(42)
 
 # Create output directory
-os.makedirs("outputs", exist_ok=True)
+output_dir = os.path.join(os.path.dirname(__file__), "../outputs")
+os.makedirs(output_dir, exist_ok=True)
 
 # Load dataset
-df = pd.read_csv("../data/creditcard.csv")
+data_path = os.path.join(os.path.dirname(__file__), "../data/creditcard.csv")
+df = pd.read_csv(data_path)
 
 # Feature engineering
 df['Time'] = df['Time'] / 3600  # Convert seconds to hours
@@ -47,7 +51,8 @@ X_train_smote, y_train_smote = smote.fit_resample(X_train, y_train)
 X_train_under, y_train_under = undersampler.fit_resample(X_train, y_train)
 
 # Save model evaluation reports
-results_file = open("outputs/model_results.txt", "w")
+results_path = os.path.join(output_dir, "model_results.txt")
+results_file = open(results_path, "w")
 
 def evaluate_model(model, X_train, y_train, X_test, y_test, model_name):
     start_time = time.time()
@@ -97,7 +102,10 @@ param_grid_lr = {
     'penalty': ['l1', 'l2'],
     'solver': ['liblinear', 'saga']
 }
-grid_lr = GridSearchCV(LogisticRegression(class_weight='balanced', max_iter=1000, random_state=42), param_grid_lr, scoring='average_precision', cv=StratifiedKFold(5), n_jobs=-1)
+grid_lr = GridSearchCV(
+    LogisticRegression(class_weight='balanced', max_iter=1000, random_state=42),
+    param_grid_lr, scoring='average_precision', cv=StratifiedKFold(5), n_jobs=-1
+)
 grid_lr.fit(X_train, y_train)
 
 param_grid_rf = {
@@ -105,7 +113,10 @@ param_grid_rf = {
     'max_depth': [5, 10, None],
     'min_samples_split': [2, 5, 10]
 }
-random_rf = RandomizedSearchCV(RandomForestClassifier(class_weight='balanced_subsample', random_state=42), param_grid_rf, n_iter=10, scoring='average_precision', cv=StratifiedKFold(5), n_jobs=-1)
+random_rf = RandomizedSearchCV(
+    RandomForestClassifier(class_weight='balanced_subsample', random_state=42),
+    param_grid_rf, n_iter=10, scoring='average_precision', cv=StratifiedKFold(5), n_jobs=-1
+)
 random_rf.fit(X_train, y_train)
 
 results_file.write(f"\nBest Logistic Regression Parameters: {grid_lr.best_params_}\n")
@@ -121,7 +132,7 @@ plt.figure(figsize=(10,6))
 sns.barplot(x='Weight', y='Feature', data=lr_coef)
 plt.title("Logistic Regression Feature Weights")
 plt.tight_layout()
-plt.savefig("outputs/lr_feature_weights.png")
+plt.savefig(os.path.join(output_dir, "lr_feature_weights.png"))
 
 # Interpretability - SHAP for Random Forest
 explainer = shap.TreeExplainer(random_rf.best_estimator_)
@@ -131,20 +142,20 @@ plt.figure()
 shap.summary_plot(shap_values[1], X_test, plot_type="dot", show=False)
 plt.title("SHAP Feature Importance (Fraud Class)")
 plt.tight_layout()
-plt.savefig("outputs/shap_summary.png")
+plt.savefig(os.path.join(output_dir, "shap_summary.png"))
 
 # ROC Curves
 plt.figure()
 RocCurveDisplay.from_estimator(grid_lr.best_estimator_, X_test, y_test, name="Tuned LR")
 RocCurveDisplay.from_estimator(random_rf.best_estimator_, X_test, y_test, name="Tuned RF")
 plt.title("ROC Curve Comparison")
-plt.savefig("outputs/roc_curve.png")
+plt.savefig(os.path.join(output_dir, "roc_curve.png"))
 
 # Precision-Recall Curves
 plt.figure()
 PrecisionRecallDisplay.from_estimator(grid_lr.best_estimator_, X_test, y_test, name="Tuned LR")
 PrecisionRecallDisplay.from_estimator(random_rf.best_estimator_, X_test, y_test, name="Tuned RF")
 plt.title("Precision-Recall Curve Comparison")
-plt.savefig("outputs/pr_curve.png")
+plt.savefig(os.path.join(output_dir, "pr_curve.png"))
 
 results_file.close()
