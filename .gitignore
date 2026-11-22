@@ -1,0 +1,14 @@
+# Dataset (download from Kaggle, see README)
+data/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Generated outputs (remove this line if you want to commit the plots)
+outputs/
+
+.DS_Store
