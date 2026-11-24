@@ -1,7 +1,7 @@
-pandas
-numpy
-matplotlib
-seaborn
-scikit-learn
-imbalanced-learn
-shap
+pandas>=2.0
+numpy>=1.24
+matplotlib>=3.7
+seaborn>=0.12
+scikit-learn>=1.3
+imbalanced-learn>=0.12
+shap>=0.44
